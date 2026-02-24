@@ -1,0 +1,32 @@
+import praw
+from datetime import datetime, timedelta
+
+
+CLIENT_ID = "34jIVx3NwNe-fQxYC8rdnQ"
+CLIENT_SECRET = "rVyIBBY63w1s-cfMrMduIkkXOluASQ"
+USER_AGENT = "cutest_A by u/cutestpome"
+
+reddit = praw.Reddit(
+    client_id=34jIVx3NwNe-fQxYC8rdnQ,
+    client_secret=rVyIBBY63w1s-cfMrMduIkkXOluASQ,
+    user_agent=cutestpome,
+)
+
+subreddit = reddit.subreddit("wallstreetbets")
+
+one_week_ago = datetime.utcnow() - timedelta(days=7)
+
+print("Fetching recent posts...\n")
+
+count = 0
+for submission in subreddit.new(limit=25):
+    if datetime.utcfromtimestamp(submission.created_utc) >= one_week_ago:
+        print(f"Title: {submission.title}")
+        print(f"Score: {submission.score}")
+        print(f"Created: {datetime.utcfromtimestamp(submission.created_utc)}")
+        print("-" * 40)
+        count += 1
+    if count >= 10:
+        break
+
+print("Done.")
